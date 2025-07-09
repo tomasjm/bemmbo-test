@@ -16,24 +16,20 @@ import {
   } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import type { Invoice } from "@/types"
+import type { DataTableProps, Invoice } from "@/types"
 import useInvoiceStore from "@/store/invoices.store"
+import { DataTablePagination } from "@/components/ui/table-pagination"
 
 
-  interface InvoiceDataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[]
-    data: TData[]
-  }
+
 
   export function InvoiceDataTable<TData, TValue>({
     columns,
     data,
-  }: InvoiceDataTableProps<TData, TValue>) {
+  }: DataTableProps<TData, TValue>) {
 
 
     const { table: { selectedRows, setInvoiceSelectionRows } } = useInvoiceStore(state => state);
-
-
 
     const table = useReactTable({
       data,
@@ -48,8 +44,6 @@ import useInvoiceStore from "@/store/invoices.store"
 
     const { processing: { markInvoicesAsInjected } } = useInvoiceStore(state => state);
 
-
-
     async function injectInvoices() {
         const selectedRows = table.getSelectedRowModel().rows.map((row) => row.original as Invoice);
         const success = await markInvoicesAsInjected(selectedRows);
@@ -58,14 +52,15 @@ import useInvoiceStore from "@/store/invoices.store"
         }
     }
 
-
   
     return (
       <div>
-        <Button onClick={injectInvoices}>Inject Invoices</Button>
-        <div className="rounded-md border">
-        <Table>
-          <TableHeader>
+        <div className="flex justify-end my-4">
+          <Button onClick={injectInvoices}>Inject Invoices</Button>
+        </div>
+        <div className="rounded-md border overflow-hidden">
+        <Table className="w-full">
+          <TableHeader className="bg-gray-100">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -107,30 +102,7 @@ import useInvoiceStore from "@/store/invoices.store"
           </TableBody>
         </Table>
         </div>
-        <div className="flex items-center justify-between space-x-2 py-4">
-          <div className="text-sm text-muted-foreground">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
-          </div>
-          <div className="flex items-center space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
+        <DataTablePagination table={table} />
       </div>
     )
   }

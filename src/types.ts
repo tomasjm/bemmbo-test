@@ -20,3 +20,4 @@ export type Invoice = {
     invoices_ids: string[]
     status: "pending" | "in_progress" | "injected" | "failed" | "retrying"
   }
+

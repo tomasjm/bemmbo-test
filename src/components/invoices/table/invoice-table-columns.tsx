@@ -49,16 +49,28 @@ export const columns: ColumnDef<Invoice>[] = [
   {
     header: "Monto",
     accessorKey: "amount",
+
     cell: ({ row }) => {
         const amount = row.getValue("amount") as number;
         const currency = row.getValue("currency") as Currency;
-        return formatCurrency(amount,currency);
+        return (
+            <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-500">{formatCurrency(amount,currency)}</span>
+            </div>
+        )
       },
   },
   {
     header: "Moneda",
     accessorKey: "currency",
-
+    cell: ({ row }) => {
+        const currency = row.getValue("currency") as Currency;
+        return (
+            <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-500">{currency}</span>
+            </div>
+        )
+      },
   },
   {
     header: "Inyectado",

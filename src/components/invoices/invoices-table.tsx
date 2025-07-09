@@ -33,7 +33,7 @@ export function InvoicesTable() {
 
 
     return (
-        <div className="container mx-auto flex flex-col gap-4 "
+        <div className="container mx-auto flex flex-col gap-4 h-full"
         >
             <h1>Invoice Table</h1>
             <p>Total invoices: {data_qty}</p>
