@@ -1,20 +1,13 @@
-import bemmboLogo from "./assets/bemmbo-logo.svg";
-import { Button } from "./components/ui/button";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+
+const queryClient = new QueryClient()
 
 function App() {
   return (
-    <>
-      {/* Build your page here */}
-      <div className="flex justify-center items-center h-screen w-screen bg-slate-50">
-        <div className="flex flex-col items-center justify-center gap-4">
-          <img src={bemmboLogo} alt="Bemmbo Logo" className="w-1/2 h-1/2" />
-          <h1 className="text-3xl font-bold text-blue-600">
-            Prueba técnica Bemmbo
-          </h1>
-          <Button>Click me</Button>
-        </div>
-      </div>
-    </>
+    <QueryClientProvider client={queryClient}>
+      
+    </QueryClientProvider>
   );
 }
 
