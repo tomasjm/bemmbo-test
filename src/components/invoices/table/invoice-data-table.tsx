@@ -31,6 +31,11 @@ import { Button } from "@/components/ui/button"
       columns,
       getCoreRowModel: getCoreRowModel(),
       getPaginationRowModel: getPaginationRowModel(),
+      initialState: {
+        columnVisibility: {
+          id: false,
+        },
+      },
     })
    
     return (
