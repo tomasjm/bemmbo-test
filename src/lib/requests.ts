@@ -4,6 +4,8 @@ const token = import.meta.env.VITE_BEMMBO_TOKEN;
 const baseUrl = import.meta.env.VITE_BEMMBO_API_URL;
 
 
+
+
 export async function getInvoices(): Promise<Invoice[]> {
     const response = await fetch(`${baseUrl}/invoices`, {
         headers: {
@@ -14,6 +16,6 @@ export async function getInvoices(): Promise<Invoice[]> {
         throw new Error("Failed to fetch invoices");
     }
     const data = await response.json();
-    return data.invoices;
+    return data;
 }
 
