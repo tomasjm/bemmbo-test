@@ -5,7 +5,8 @@ import DataTableHeader from "@/components/ui/table-header";
 interface DataTableBodyProps<TData> {
 
     table: TableType<TData>
-    columns: ColumnDef<TData, unknown>[]
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    columns: ColumnDef<TData, any>[]
   }
   
   export default function DataTableBody<TData>({

@@ -22,7 +22,7 @@ export function InvoiceProgress({ isProcessingInvoices, batchesInProgress }: Inv
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     {isProcessingInvoices && <Spinner size="sm" />}
-                    Invoice Processing Status
+                    Estado de procesamiento
                 </CardTitle>
                 <CardDescription>
                     {isProcessingInvoices ? "Procesando facturas..." : "Todas las facturas procesadas"}
