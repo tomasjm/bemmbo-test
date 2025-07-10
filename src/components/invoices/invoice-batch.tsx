@@ -36,7 +36,11 @@ function getStatusText(status: string) {
   }
 }
 
-export function InvoiceBatch({ batch }: { batch: Batch }) {
+interface InvoiceBatchProps {
+  batch: Batch
+}
+
+export function InvoiceBatch({ batch }: InvoiceBatchProps) {
   return (
     <div
       key={batch.id}

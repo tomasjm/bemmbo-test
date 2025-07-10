@@ -29,12 +29,13 @@ interface InvoiceStore {
 
   processing: {
     isProcessingInvoices: boolean;
+    setIsProcessingInvoices: (isProcessingInvoices: boolean) => void;
     batchesInProgress: Batch[];
     setBatchesInProgress: (batchesInProgress: Batch[]) => void;
     clearBatch: (batch_id: string) => void;
     updateBatchStatus: (batch_id: string, status: BatchStatus) => void;
     updateCurrentInvoices: (invoices: string[]) => void;
-    markInvoicesAsInjected: (invoices: Invoice[]) => Promise<boolean>;
+    markInvoicesAsInjected: (invoices: Invoice[]) => Promise<void>;
   };
 }
 
@@ -82,6 +83,13 @@ const useInvoiceStore = create<InvoiceStore>((set, get) => ({
 
   processing: {
     isProcessingInvoices: false,
+    setIsProcessingInvoices: (isProcessingInvoices: boolean) =>
+      set({
+        processing: {
+          ...get().processing,
+          isProcessingInvoices: isProcessingInvoices,
+        },
+      }),
     batchesInProgress: [],
     updateBatchStatus: (batch_id: string, status: BatchStatus) =>
       set((state) => ({
@@ -121,23 +129,11 @@ const useInvoiceStore = create<InvoiceStore>((set, get) => ({
 
     markInvoicesAsInjected: async (
       selectedInvoices: Invoice[]
-    ): Promise<boolean> => {
-      set((state) => ({
-        processing: {
-          ...state.processing,
-          isProcessingInvoices: true,
-        },
-      }));
+    ) => {
+  
+      if (selectedInvoices.length === 0)return;
+      get().processing.setIsProcessingInvoices(true);
 
-      if (selectedInvoices.length === 0) {
-        set((state) => ({
-          processing: {
-            ...state.processing,
-            isProcessingInvoices: false,
-          },
-        }));
-        return false;
-      }
 
       const batches: Invoice[][] = [];
       for (let i = 0; i < selectedInvoices.length; i += 25) {
@@ -172,11 +168,6 @@ const useInvoiceStore = create<InvoiceStore>((set, get) => ({
             if (error) {
               if (attempt < 5) {
                 const delay = Math.pow(2, attempt) * 1000;
-                console.log(
-                  `Some batch failed with 500 error, retrying in ${delay}ms... (attempt ${
-                    attempt + 1
-                  }/5)`
-                );
                 await new Promise((resolve) => setTimeout(resolve, delay));
                 get().processing.updateBatchStatus(batch.id, "retrying");
                 continue;
@@ -198,24 +189,13 @@ const useInvoiceStore = create<InvoiceStore>((set, get) => ({
 
         get().table.clearSelectedRows();
 
-        set((state) => ({
-          processing: {
-            ...state.processing,
-            isProcessingInvoices: false,
-          },
-        }));
-        return true;
+        get().processing.setIsProcessingInvoices(false);
       } catch (error) {
+        
         console.error("Error injecting invoices:", error);
-      
-        set((state) => ({
-          processing: {
-            ...state.processing,
-            isProcessingInvoices: false,
-          },
-        }));
-        return false;
+        get().processing.setIsProcessingInvoices(false);
       }
+
     },
   },
 }));

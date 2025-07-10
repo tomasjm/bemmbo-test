@@ -10,7 +10,11 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { formatCurrency } from "@/lib/utils"
 import type { Invoice } from "@/types"
 
-export function InvoiceConfirmTable({ invoices }: { invoices: Invoice[] }) {
+interface InvoiceConfirmTableProps {
+  invoices: Invoice[]
+}
+
+export function InvoiceConfirmTable({ invoices }: InvoiceConfirmTableProps) {
   return (
     <ScrollArea maxHeight="400px" className="rounded-md border">
       <Table>

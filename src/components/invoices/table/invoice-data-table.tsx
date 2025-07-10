@@ -97,15 +97,12 @@ export function InvoiceDataTable<TData, TValue>({
         </Button>
       </div>
 
-      {/* Selection Display */}
       <DataTableSelectedDisplay table={table} />
 
-      {/* Table Container */}
       <div className="rounded-lg border bg-card shadow-sm overflow-hidden">
         <DataTableBody table={table} columns={columns} />
       </div>
 
-      {/* Pagination */}
       <div className="flex justify-center">
         <DataTablePagination table={table} />
       </div>
