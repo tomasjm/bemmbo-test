@@ -58,6 +58,14 @@ export function InvoiceDataTable<TData, TValue>({
             }
             className="w-64"
           />
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.getColumn("receiverName")?.setFilterValue("")}
+            className="px-3"
+          >
+            Limpiar
+          </Button>
         </div>
         <Button onClick={() => setIsConfirmDialogOpen(true)}>Inyectar facturas</Button>
       </div>
