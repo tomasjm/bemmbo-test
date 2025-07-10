@@ -2,6 +2,7 @@ import {
   getCoreRowModel,
   useReactTable,
   getPaginationRowModel,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
@@ -10,8 +11,8 @@ import useInvoiceStore from "@/store/invoices.store";
 import { DataTablePagination } from "@/components/ui/table-pagination";
 import { DataTableSelectedDisplay } from "@/components/ui/table-selected-display";
 import DataTableBody from "@/components/ui/table-body";
-import { useEffect, useState } from "react";
-import React from "react";
+import { useEffect } from "react";
+import { Input } from "@/components/ui/input";
 
 export function InvoiceDataTable<TData, TValue>({
   columns,
@@ -30,6 +31,7 @@ export function InvoiceDataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     onRowSelectionChange: setInvoiceSelectionRows,
     state: {
       rowSelection: selectedRows,
@@ -45,7 +47,18 @@ export function InvoiceDataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex justify-end my-4">
+      <div className="flex justify-between items-center my-4">
+        <div className="flex items-center gap-2">
+          <label className="text-sm font-medium">Buscar por emisor:</label>
+          <Input
+            placeholder="Buscar emisor..."
+            value={(table.getColumn("receiverName")?.getFilterValue() as string) ?? ""}
+            onChange={(event) => 
+              table.getColumn("receiverName")?.setFilterValue(event.target.value)
+            }
+            className="w-64"
+          />
+        </div>
         <Button onClick={() => setIsConfirmDialogOpen(true)}>Inyectar facturas</Button>
       </div>
       <DataTableSelectedDisplay table={table} />
