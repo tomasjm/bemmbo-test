@@ -13,6 +13,7 @@ import { DataTableSelectedDisplay } from "@/components/ui/table-selected-display
 import DataTableBody from "@/components/ui/table-body";
 import { useEffect } from "react";
 import { Input } from "@/components/ui/input";
+import { Search, X, Upload } from "lucide-react";
 
 export function InvoiceDataTable<TData, TValue>({
   columns,
@@ -46,34 +47,67 @@ export function InvoiceDataTable<TData, TValue>({
 
 
   return (
-    <div>
-      <div className="flex justify-between items-center my-4">
-        <div className="flex items-center gap-2">
-          <label className="text-sm font-medium">Buscar por emisor:</label>
-          <Input
-            placeholder="Buscar emisor..."
-            value={(table.getColumn("receiverName")?.getFilterValue() as string) ?? ""}
-            onChange={(event) => 
-              table.getColumn("receiverName")?.setFilterValue(event.target.value)
-            }
-            className="w-64"
-          />
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.getColumn("receiverName")?.setFilterValue("")}
-            className="px-3"
-          >
-            Limpiar
-          </Button>
+    <div className="space-y-6">
+      {/* Filter and Actions Section */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 p-4 bg-muted/50 rounded-lg border">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+            <Search className="h-4 w-4" />
+            <span>Buscar por emisor:</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <Input
+                placeholder="Buscar emisor..."
+                value={(table.getColumn("receiverName")?.getFilterValue() as string) ?? ""}
+                onChange={(event) => 
+                  table.getColumn("receiverName")?.setFilterValue(event.target.value)
+                }
+                className="w-64 pl-3 pr-10"
+              />
+              {(table.getColumn("receiverName")?.getFilterValue() as string) && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => table.getColumn("receiverName")?.setFilterValue("")}
+                  className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 p-0 hover:bg-muted"
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              )}
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.getColumn("receiverName")?.setFilterValue("")}
+              className="px-3 text-muted-foreground hover:text-foreground"
+              disabled={!(table.getColumn("receiverName")?.getFilterValue() as string)}
+            >
+              <X className="h-3 w-3 mr-1" />
+              Limpiar
+            </Button>
+          </div>
         </div>
-        <Button onClick={() => setIsConfirmDialogOpen(true)}>Inyectar facturas</Button>
+        <Button 
+          onClick={() => setIsConfirmDialogOpen(true)}
+          className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm"
+          size="sm"
+        >
+          <Upload className="h-4 w-4 mr-2" />
+          Inyectar facturas
+        </Button>
       </div>
+
+      {/* Selection Display */}
       <DataTableSelectedDisplay table={table} />
-      <div className="rounded-md border overflow-hidden">
+
+      {/* Table Container */}
+      <div className="rounded-lg border bg-card shadow-sm overflow-hidden">
         <DataTableBody table={table} columns={columns} />
       </div>
-      <div className="flex justify-center my-4">
+
+      {/* Pagination */}
+      <div className="flex justify-center">
         <DataTablePagination table={table} />
       </div>
     </div>

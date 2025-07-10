@@ -15,9 +15,10 @@ export type Invoice = {
     data: TData[]
   }
 
+  export type BatchStatus = "pending" | "in_progress" | "injected" | "failed" | "retrying"
   export type Batch = {
     id: string
-    invoices_ids: string[]
-    status: "pending" | "in_progress" | "injected" | "failed" | "retrying"
+    invoices: Invoice[]
+    status: BatchStatus
   }
 

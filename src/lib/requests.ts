@@ -44,7 +44,8 @@ export async function injectInvoices(invoices: Invoice[]): Promise<[error: boole
 }
 
 
-export async function processBatchWithRetry(batch: Invoice[], maxRetries: number = 3): Promise<string[]>{    
+export async function processBatchWithRetry(batch: Invoice[], maxRetries: number = 3): Promise<string[]>{ 
+       
     for (let attempt = 0; attempt <= maxRetries; attempt++) {
         const [error, validInvoiceIds] = await injectInvoices(batch);
 
