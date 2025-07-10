@@ -48,7 +48,6 @@ export function InvoiceDataTable<TData, TValue>({
 
   return (
     <div className="space-y-6">
-      {/* Filter and Actions Section */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 p-4 bg-muted/50 rounded-lg border">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
