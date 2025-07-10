@@ -5,7 +5,8 @@ interface TableSkeletonProps {
   columns?: number;
 }
 
-export function TableSkeleton({ rows = 5, columns = 5 }: TableSkeletonProps) {
+// esto fue full ia para ser sincero, basado en el componente skeleton de shadcn/ui para hacer loadings
+export function TableSkeleton({ rows = 5 }: TableSkeletonProps) {
   return (
     <div className="w-full">
       {/* Table Header */}

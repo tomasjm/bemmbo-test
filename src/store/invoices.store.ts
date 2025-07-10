@@ -14,10 +14,16 @@ interface InvoiceStore {
     setInvoiceSelectionRows: (invoiceSelectionRows: {
       [key: string]: boolean
     } | ((old: { [key: string]: boolean }) => { [key: string]: boolean })) => void;
-  }
-
+    clearSelectedRows: () => void;
+  },
+  dialog: {
+    isConfirmDialogOpen: boolean;
+    setIsConfirmDialogOpen: (isConfirmDialogOpen: boolean) => void;
+  },
   invoices: Invoice[];
+  selectedInvoices: Invoice[];
   setInvoices: (invoices: Invoice[]) => void;
+  setSelectedInvoices: (invoices: Invoice[]) => void;
 
   processing: {
     isProcessingInvoices: boolean;
@@ -31,7 +37,12 @@ interface InvoiceStore {
 
 
 const useInvoiceStore = create<InvoiceStore>((set, get) => ({
+  dialog: {
+    isConfirmDialogOpen: false,
+    setIsConfirmDialogOpen: (isConfirmDialogOpen: boolean) => set({ dialog: { ...get().dialog, isConfirmDialogOpen: isConfirmDialogOpen } }),
+  },
   table: {
+    clearSelectedRows: () => set((state) => ({ table: { ...state.table, selectedRows: {} } })),
     selectedRows: {},
     setInvoiceSelectionRows: (invoiceSelectionRows: {
       [key: string]: boolean
@@ -53,7 +64,8 @@ const useInvoiceStore = create<InvoiceStore>((set, get) => ({
       }
     },
   },
-  
+  selectedInvoices: [],
+  setSelectedInvoices: (invoices: Invoice[]) => set({ selectedInvoices: invoices }),
   invoices: [],
   setInvoices: (invoices: Invoice[]) => set({ invoices: invoices }),
 
@@ -121,8 +133,9 @@ const useInvoiceStore = create<InvoiceStore>((set, get) => ({
           get().processing.clearOneBatch();
           get().processing.updateCurrentInvoices(result);
         }
-        
+        get().table.clearSelectedRows();
         alert(`Successfully injected ${selectedInvoices.length} invoices in ${batches.length} batch(es)`);
+
         set((state) => ({ 
           processing: {
             ...state.processing,

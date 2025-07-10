@@ -5,13 +5,15 @@ import { getInvoices } from "./lib/requests";
 import useInvoiceStore from "./store/invoices.store";
 import { InvoiceDataTable } from "./components/invoices/table/invoice-data-table";
 import { columns } from "./components/invoices/table/invoice-table-columns";
+import { InvoiceConfirmDialog } from "./components/invoices/invoice-confirm-dialog";
+import { Button } from "./components/ui/button";
 
 
 
 function App() {
   
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { invoices, setInvoices, processing: { isProcessingInvoices, batchesInProgress } } = useInvoiceStore(state => state);
+  const { invoices, setInvoices, processing: { isProcessingInvoices, batchesInProgress }, selectedInvoices, dialog: { isConfirmDialogOpen, setIsConfirmDialogOpen } } = useInvoiceStore(state => state);
 
   useEffect(() => {
     const fetchInvoices = async () => {
@@ -36,6 +38,7 @@ function App() {
           </div>
           </>)
         }
+        <InvoiceConfirmDialog invoices={selectedInvoices} isOpen={isConfirmDialogOpen} onOpenChange={setIsConfirmDialogOpen} />
       </div>
   );
 }

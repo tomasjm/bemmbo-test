@@ -10,14 +10,20 @@ import useInvoiceStore from "@/store/invoices.store";
 import { DataTablePagination } from "@/components/ui/table-pagination";
 import { DataTableSelectedDisplay } from "@/components/ui/table-selected-display";
 import DataTableBody from "@/components/ui/table-body";
+import { useEffect, useState } from "react";
+import React from "react";
 
 export function InvoiceDataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
   const {
+    setSelectedInvoices,
     table: { selectedRows, setInvoiceSelectionRows },
+    dialog: { setIsConfirmDialogOpen },
   } = useInvoiceStore((state) => state);
+
+
 
   const table = useReactTable({
     data,
@@ -30,24 +36,17 @@ export function InvoiceDataTable<TData, TValue>({
     },
   });
 
-  const {
-    processing: { markInvoicesAsInjected },
-  } = useInvoiceStore((state) => state);
 
-  async function injectInvoices() {
-    const selectedRows = table
-      .getSelectedRowModel()
-      .rows.map((row) => row.original as Invoice);
-    const success = await markInvoicesAsInjected(selectedRows);
-    if (success) {
-      table.resetRowSelection();
-    }
-  }
+  useEffect(() => {
+    setSelectedInvoices(table.getSelectedRowModel().rows.map((row) => row.original as Invoice))
+  }, [selectedRows])
+
+
 
   return (
     <div>
       <div className="flex justify-end my-4">
-        <Button onClick={injectInvoices}>Inyectar facturas</Button>
+        <Button onClick={() => setIsConfirmDialogOpen(true)}>Inyectar facturas</Button>
       </div>
       <DataTableSelectedDisplay table={table} />
       <div className="rounded-md border overflow-hidden">
