@@ -187,15 +187,16 @@ const useInvoiceStore = create<InvoiceStore>((set, get) => ({
             }
             get().processing.updateBatchStatus(batch.id, "injected");
             get().processing.updateCurrentInvoices(validInvoiceIds);
-            get().processing.clearBatch(batch.id.toString());
+            setTimeout(() => {
+              get().processing.clearBatch(batch.id.toString());
+              
+            }, 5000);
+            
             break;
           }
         }
 
         get().table.clearSelectedRows();
-        alert(
-          `Successfully injected ${selectedInvoices.length} invoices in ${batches.length} batch(es)`
-        );
 
         set((state) => ({
           processing: {
@@ -206,11 +207,7 @@ const useInvoiceStore = create<InvoiceStore>((set, get) => ({
         return true;
       } catch (error) {
         console.error("Error injecting invoices:", error);
-        alert(
-          `Failed to inject invoices: ${
-            error instanceof Error ? error.message : "Unknown error"
-          }`
-        );
+      
         set((state) => ({
           processing: {
             ...state.processing,
