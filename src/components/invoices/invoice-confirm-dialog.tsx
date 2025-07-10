@@ -17,28 +17,37 @@ interface InvoiceConfirmDialogProps {
   onOpenChange: (open: boolean) => void
 }
 
-  export function InvoiceConfirmDialog({ invoices, isOpen, onOpenChange }: InvoiceConfirmDialogProps) {
-    const {
-      processing: { markInvoicesAsInjected },
-    } = useInvoiceStore((state) => state);
-    return (
-        <Dialog open={isOpen} onOpenChange={onOpenChange}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Inyección de facturas</DialogTitle>
-            <DialogDescription>
-Revisa las facturas que se van a inyectar y confirma la inyección.
-           </DialogDescription>
-          </DialogHeader>
+export function InvoiceConfirmDialog({ invoices, isOpen, onOpenChange }: InvoiceConfirmDialogProps) {
+  const {
+    processing: { markInvoicesAsInjected },
+  } = useInvoiceStore((state) => state);
+  
+  return (
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[600px] max-h-[80vh] flex flex-col">
+        <DialogHeader>
+          <DialogTitle>Inyección de facturas</DialogTitle>
+          <DialogDescription>
+            Revisa las facturas que se van a inyectar y confirma la inyección.
+          </DialogDescription>
+        </DialogHeader>
+        
+        <div className="flex-1 min-h-0 py-2">
           <InvoiceConfirmTable invoices={invoices} />
-          <DialogFooter>
-            <Button onClick={() => onOpenChange(false)}>Cancelar</Button>
-            <Button onClick={() => {
-              onOpenChange(false)
-              markInvoicesAsInjected(invoices)
-            }}>Confirmar</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    )
-  }
+        </div>
+        
+        <DialogFooter className="flex-shrink-0">
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Cancelar
+          </Button>
+          <Button onClick={() => {
+            onOpenChange(false)
+            markInvoicesAsInjected(invoices)
+          }}>
+            Confirmar
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}

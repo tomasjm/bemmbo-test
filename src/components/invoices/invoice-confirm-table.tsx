@@ -6,20 +6,19 @@ import {
     TableHeader,
     TableRow,
   } from "@/components/ui/table"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { formatCurrency } from "@/lib/utils"
-  import type { Invoice } from "@/types"
+import type { Invoice } from "@/types"
 
-
-  
-  
-  export function InvoiceConfirmTable({ invoices }: { invoices: Invoice[] }) {
-    return (
+export function InvoiceConfirmTable({ invoices }: { invoices: Invoice[] }) {
+  return (
+    <ScrollArea maxHeight="400px" className="rounded-md border">
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">Emisor</TableHead>
             <TableHead>Monto</TableHead>
-            <TableHead className="text-right">Moneda</TableHead>
+            <TableHead >Moneda</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -27,12 +26,12 @@ import { formatCurrency } from "@/lib/utils"
             <TableRow key={invoice.id}>
               <TableCell className="font-medium">{invoice.receiverName}</TableCell>
               <TableCell>{formatCurrency(invoice.amount, invoice.currency)}</TableCell>
-              <TableCell className="text-right">{invoice.currency}</TableCell>
+              <TableCell >{invoice.currency}</TableCell>
             </TableRow>
           ))}
         </TableBody>
-       
       </Table>
-    )
-  }
+    </ScrollArea>
+  )
+}
   
