@@ -1,6 +1,6 @@
 import type { Batch, BatchStatus, Invoice } from "@/types";
 import { create } from "zustand";
-import { injectInvoices, processBatchWithRetry } from "@/lib/requests";
+import { injectInvoices } from "@/lib/requests";
 
 interface InvoiceStore {
   table: {

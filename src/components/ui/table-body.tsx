@@ -5,7 +5,7 @@ import DataTableHeader from "@/components/ui/table-header";
 interface DataTableBodyProps<TData> {
 
     table: TableType<TData>
-    columns: ColumnDef<TData, any>[]
+    columns: ColumnDef<TData, unknown>[]
   }
   
   export default function DataTableBody<TData>({

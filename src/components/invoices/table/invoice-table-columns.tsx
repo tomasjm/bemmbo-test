@@ -34,7 +34,7 @@ export const columns: ColumnDef<Invoice>[] = [
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value ? !row.original.injected : false)}
+        onCheckedChange={(value) => row.toggleSelected(value ? !row.original.injected : false)}
         aria-label="Select row"
         disabled={row.original.injected}
       />
